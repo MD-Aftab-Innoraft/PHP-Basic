@@ -87,7 +87,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // if the image name is set, we display the image
         if (isset($img_name) && !empty($img_name)) {
             echo "<div class='uploadimage'>";
-            echo "<img  src = 'uploads/$img_name' >";
+            echo "<img  src = 'uploads/$img_name' height=300px > ";
             echo "</div>";
         }
 
