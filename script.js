@@ -10,6 +10,7 @@ let errorFree = true;
  * 
  * @returns : string
  */
+
 function checkInput(data, regex, field) {
     let length = data.length;
     if (length === 0) {
@@ -29,9 +30,26 @@ function checkInput(data, regex, field) {
     }
 }
 
-function isNumber(n) { return /^-?[\d.]+(?:e-?\d+)?$/.test(n); } 
+/**
+* Function to check if the input 'data' is a number.
+* @params : (i) 'data' to be verified.   
+*
+* @returns : boolean (true if 'data' is a number. otherwise false)
+*/
 
-function checkSubjectMarks (data, regex) {
+function isNumber(data) { 
+    return /^-?[\d.]+(?:e-?\d+)?$/.test(data); 
+} 
+
+/**
+* Function to check if the input 'data' has valid 'Subject|Marks' pairs.
+* @params : (i)   string 'data' to be verified.   
+*           (ii)  string 'regex' to allow only specified characters.
+*
+* @returns : string containing the Error message(if any).
+*/
+
+function checkSubjectMarks (data, regex){
     if(data.length == 0) {
         errorFree = false;
         return "* No subject|marks pairs entered";
@@ -47,7 +65,7 @@ function checkSubjectMarks (data, regex) {
             subjectMarksPair = lines[i].split("|");
             if(subjectMarksPair.length !== 2 || isNumber(subjectMarksPair[0]) || !isNumber(subjectMarksPair[1])) {
                 errorFree = false;
-                return "Invalid Pairs";
+                return "* Invalid Pairs";
             }
             else if(subjectMarksPair[1] > 100 ) {
                 errorFree = false;
@@ -63,9 +81,11 @@ function checkSubjectMarks (data, regex) {
  * Function to implement front-end validation
  * of the user inputs.
  * @params : No input parameters 
- * @returns : boolean (true if no errors)
+ * @returns : boolean (true if no errors).
  */
+
 function validateData() {
+    alert("Script is running");
     /* Getting the value of the different user inputs */
     let fname = document.getElementById('fname').value.trim();
     let lname = document.getElementById('lname').value.trim();
@@ -84,12 +104,14 @@ function validateData() {
     let lnameError = document.getElementById('lnameError');
     lnameError.innerHTML = checkInput(lname, nameRegex, "Last name");
 
+    /* Validation for 'Subject|Marks' pairs. */
     let subjectMarks = document.getElementById("subjectMarks").value.trim();
     let subjectMarksError = document.getElementById("subjectMarksError");
-
     subjectMarksError.innerHTML = checkSubjectMarks(subjectMarks, subjectMarksRegex);
+
 
     /* Returning whether all the input fields are proper
        and the form can be submitted or not. */
     return errorFree;
 }
+ 

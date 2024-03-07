@@ -6,23 +6,6 @@ require 'inputForm.php';
 /* Creating a new Form object */
 $myForm = new Form();
 
-/** Function to check if the passed parameter is a number 
- * @params: an input $n which is to be checked
- * @output: boolean; true if $n is a numeric otherwise false
-*/
-// function isNumber($n) : bool {
-//     $numberRegex = '/^-?[\d.]+(?:e-?\d+)?$/';
-//     if(preg_match($numberRegex, $n)) {
-//         return true;
-//     }
-//     else {
-//         return false;
-//     }
-// }
-
-
-
-
 /* When the form is submitted using POST method */
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
@@ -57,8 +40,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     /* move $img_tmp to the required folder with the name with which it is saved */
     move_uploaded_file($img_tmp, "uploads/$img_name");
 
+    /**
+     * Extracting 'Subject|Marks' input by the user using $_POST[].
+     * Declaring a regex to validate it. 
+     * Find any other errors (if present).
+     */
     $subjectMarks = $_POST["subjectMarks"];
-    $subjectMarksRegex = '/^[a-zA-Z0-9|\s]+$/';
+    $subjectMarksRegex = '/^[a-zA-Z0-9|\s\n ]+$/';
     $myForm->subjectMarksError = $myForm->checkSubjectMarks($subjectMarks, $subjectMarksRegex);
     if($myForm->subjectMarksError == "") {
         $myForm->setSubjectMarks($subjectMarks);
@@ -107,7 +95,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <!-- Input for Subject|Marks pairs. One in each line -->
             <label for="subjectMarks">Enter Subject|Marks : </label>
             <textarea name="subjectMarks" id="subjectMarks" cols="30" rows="10" required maxlength="100"></textarea>
-            <span class="error" id="subjectMarksError">* </span>
+            <span class="error" id="subjectMarksError">* <?php echo $myForm->subjectMarksError ?> </span>
 
             <!-- Submits the form. -->
             <input type="submit" name="submit" value="Submit">
@@ -131,7 +119,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
         <?php 
         $mySubjectMarks = $myForm->getSubjectMarks(); ?>
-        
+        <!-- Displaying the Subject|Marks pairs in the form of a table.  -->
         <table>
         <tr>
         <th>Srl no.</th>
@@ -141,32 +129,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <?php
         $sl = 1;
         $mySubjectMarks = explode("\n",$mySubjectMarks);
+
         foreach($mySubjectMarks as $line){
             $parts = explode("|", $line);
             $subject = $parts[0];
             $marks = $parts[1]; 
         ?>
 
-            <tr>
-        <td><?php echo $sl++;?></td>
-        <td><?php echo $subject;?></td>
-        <td><?php echo $marks;?></td>
+        <tr>
+            <td><?php echo $sl++;?></td>
+            <td><?php echo $subject;?></td>
+            <td><?php echo $marks;?></td>
         </tr>
-<?php
-        }
-        ?>
-        </table>
-<?php    } 
-    ?>
 
+        <?php } ?>
+        </table>
+
+        <?php } ?>
 
     </div>
 
-    
-    
-    <!-- Including the javascript file.  -->
+    <!-- Adding the javascript file. -->
     <script src="./script.js"></script>
 </body>
-
 
 </html>
