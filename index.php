@@ -51,6 +51,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if($myForm->subjectMarksError == "") {
         $myForm->setSubjectMarks($subjectMarks);
     }
+
+    $indianPhoneNumber = $_POST["indianPhoneNumber"];
+    $indianPhoneRegex = '/^(\+91)[1-9][0-9]{9}$/';
+    $myForm->indianPhoneError = $myForm->indianPhoneCheck($indianPhoneNumber, $indianPhoneRegex);
+    if($myForm->indianPhoneError == "") {
+        $myForm->setIndianPhoneNumber($indianPhoneNumber);
+    }
 }
 
 ?>
@@ -61,7 +68,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Assign-2</title>
+    <title>Assign-4</title>
 
     <!-- Linking stylesheet for the page -->
     <link rel="stylesheet" href="style.css">
@@ -69,7 +76,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <body>
     <div class="container">
-        <h1 class="heading">PHP Assignment 3</h1>
+        <h1 class="heading">PHP Assignment 4</h1>
         
         <form onsubmit="return validateData();" method="post" enctype="multipart/form-data" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
             <!-- Input for First name and display for errors  -->
@@ -97,6 +104,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <textarea name="subjectMarks" id="subjectMarks" cols="30" rows="10" required maxlength="100"></textarea>
             <span class="error" id="subjectMarksError">* <?php echo $myForm->subjectMarksError ?> </span>
 
+            <!-- Input an Indian Phone number. -->
+            <label for="indianPhoneNumber" id="indianPhoneNumberLabel">Enter an Indian Phone no. :</label>
+            <input type="tel" name="indianPhoneNumber" id="indianPhoneNumber" placeholder="Start with +91" title="Please enter +91 followed by your 10 digit number." minlength="13" maxlength="13" required >
+            <span class="error" id="indianPhoneError">* <?php echo $myForm->indianPhoneError ?></span>
+
             <!-- Submits the form. -->
             <input type="submit" name="submit" value="Submit">
         </form>
@@ -118,7 +130,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="detail"><?php echo "Hello, " . $myForm->getFullName(); ?></div>
         
         <?php 
-        $mySubjectMarks = $myForm->getSubjectMarks(); ?>
+        $mySubjectMarks = $myForm->getSubjectMarks(); 
+        $mySubjectMarks = trim($mySubjectMarks, " \t\n\r\0\x0B") ?>
         <!-- Displaying the Subject|Marks pairs in the form of a table.  -->
         <table>
         <tr>
@@ -145,7 +158,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <?php } ?>
         </table>
 
-        <?php } ?>
+        <div class="detail">Phone No.: <?php echo $myForm->getIndianPhoneNumber() ?></div>
+
+        <?php }  ?>
 
     </div>
 
@@ -154,3 +169,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </body>
 
 </html>
+

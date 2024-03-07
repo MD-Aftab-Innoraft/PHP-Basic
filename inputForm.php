@@ -3,35 +3,47 @@
 /* Defining the Form class which stores the Form information. */
 class Form {
 
-    /* Declaring the Class variables:
-    * (i) $fname: stores the First name
-    * (ii)$lname: stores the Last name
+    /**
+    *  Declaring the Class variables:
+    * (i)   $fname: stores the First name
+    * (ii)  $lname: stores the Last name
     * (iii) $fullName as private to implement encapsulation 
-    *  and enhance security. */
+    *        and enhance security. 
+    */
     private $fname;
     private $lname;
     private $fullName;
 
-    /* Maintains if field is properly filled. */
+    /* Maintains if every field is properly filled. */
     private $status;
 
-    /* Stores the 'Subject|Marks pairs */
+    /* Stores the 'Subject|Marks pairs. One such pair in each line */
     private $subjectMarks;
 
-    /* Error variables. */
-    public $fnameError, $lnameError, $fullNameError, $subjectMarksError;
-    public $imageUploadError;
+    /* Stores an Indian Phone number. */
+    private $indianPhoneNumber;
 
-    /* Non-parameterized constructor to initialize data members. */
+    /* Error variables to maintain error in the respective input fields. */
+    public $fnameError, $lnameError, $fullNameError, $subjectMarksError;
+    public $imageUploadError, $indianPhoneError;
+
+    /* Non-paramseterized constructor to initialize data members. */
     function __construct() {
         $this->fname = $this->lname = $this->fullName = "";
-        $this->subjectMarks = "";
+        $this->subjectMarks = $this->indianPhoneNumber = "";
         $this->fnameError = $this->lnameError = "";
         $this->imageUploadError =  $this->subjectMarksError = "";
+        $this->indianPhoneError = "" ;
         $this->status = false;
     }
 
-    /*  To check input for specified conditions and update error messages */
+    /**  
+    *   Method to check input for specified conditions and 
+    *   update error messages for name inputs.
+    *   @params: (i)  string '$data' to be verified.
+    *            (ii) string '$regex' to be validated against.
+    *   @returns: string stating error message(if any).
+    */
     function checkInput($data, $regex): string {
         if (empty($data)) {
             return "This field is required";
@@ -44,10 +56,14 @@ class Form {
         }
     }
 
-    /* Method to check if there are no error messages */
+    /** 
+    *   Method to check if there are no error messages 
+    *   @params: takes no input paramsetrs.
+    *   @returns: bool(true if no errors, false otherwise).
+    */
     function checkNoError(): bool {
         if ($this->fnameError == "" && $this->lnameError == "" && $this->imageUploadError == ""
-                            && $this->subjectMarksError == "") {
+                    && $this->subjectMarksError == "" && $this->subjectMarksError == "") {
             $this->status = true;
         }
         return $this->status;
@@ -83,17 +99,31 @@ class Form {
         return $this->fullName;
     }
 
-    /* Setter to set the Subject|Marks pairs as a string */
+    /* Setter to set the Subject|Marks pairs as a string. */
     function  setSubjectMarks($data) {
         $this->subjectMarks = $data;
     }
 
-    /* Getter which returns the Subject|Marks pairs as a string */
+    /* Getter which returns the Subject|Marks pairs as a string. */
     function getSubjectMarks() {
         return $this->subjectMarks;
     }
 
-    /* Performs some basic sanitizations on the user input. */
+    /* Setter to set the Indian Phone number. */
+    function setIndianPhoneNumber($phone) {
+        $this->indianPhoneNumber = $phone;
+    }
+
+    /* Getter to get the Indian Phone Number. */
+    function getIndianPhoneNumber () {
+        return $this->indianPhoneNumber;
+    }
+
+    /** 
+    *   Performs some basic sanitizations on the user input. 
+    *   @params: string '$data' to be sanitized.
+    *   @returns: sanitized string '$data'.
+    */
     public static function testInput(string $data): string {
         $data = trim($data);                
         $data = stripslashes($data);        
@@ -101,9 +131,14 @@ class Form {
         return $data;
     }
 
-    /* Method to validate the all 'Subject|Marks'. */
-    function checkSubjectMarks($data, $regex) {
-
+    /** 
+    *   Method to validate the all 'Subject|Marks' pairs. 
+    *   @params: (i)  string '$data' to be verified.
+    *            (ii) string 'regex' to be verified against.
+    *   @returns: string stating error message(if any).
+    */
+    function checkSubjectMarks($data, $regex): string {
+        $data = trim($data, " \t\n\r\0\x0B");
         if (empty($data)) {
             return "No subject|marks pairs entered";
         } 
@@ -126,5 +161,25 @@ class Form {
         }
         return "";
     }
+
+    /**
+     * Method to validate the Phone Number.
+     * @params: (i)  string '$phoneNumber' to be validated.
+     *          (ii) string '$phoneNumberRegex' to be verified against.
+     * @returns: string stating error message(if any).
+     */
+    function indianPhoneCheck($phoneNumber, $phoneNumberRegex): string {
+        $phoneNumber = trim($phoneNumber, " \t\n\r\0\x0B");
+        if(empty($phoneNumber)) {
+            return "Phone number is required";
+        }
+        else if (!preg_match($phoneNumberRegex, $phoneNumber)) {
+            return "Only digits and + symbol allowed";
+        }
+        else {
+            return "";
+        }
+    }
+
 }
 
