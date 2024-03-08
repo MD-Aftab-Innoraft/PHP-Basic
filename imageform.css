@@ -1,0 +1,127 @@
+/* imageform.css */
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    background: rgb(34,193,195);
+    background: radial-gradient(circle, rgba(34,193,195,1) 0%, rgba(253,187,45,1) 100%); 
+    min-height: 100svh;
+}
+
+.container{
+    max-width: 800px;
+    margin: auto;
+}
+
+.heading{
+    font-size: 50px;
+    margin: 30px 0px;
+    text-align: center;
+}
+
+label{
+    display: block;
+    font-size: 25px;
+    margin: 20px 0px 10px 0px;
+}
+
+.error{
+    vertical-align: top;  
+}
+
+input{
+    outline: none;
+    border: none;
+}
+
+input[type="text"]{
+    width: 95%;
+    margin: auto;
+    font-size: 25px;
+    padding: 5px 10px;
+    border-radius: 15px;
+    background-color: rgba(253, 253, 124, 0.808);
+    border: 2px solid black;
+    margin-bottom: 10px
+}
+
+input[type="file"] {
+    font-size: 20px;
+    padding: 5px 10px;
+    margin-bottom: 25px;
+}
+
+input[type="submit"] {
+    display: block;
+    font-size: 20px;
+    padding: 8px 20px;
+    border-radius: 10px;
+    background-color: gba(253, 253, 124, 0.808);
+    margin-top: 25px;
+}
+
+input[type="submit"]:hover{
+    cursor: pointer;
+    background-color: rgb(230, 225, 58);
+}
+
+#fullname{
+    cursor: not-allowed;
+}
+
+.detail{
+    font-size: 25px;
+    text-transform: capitalize;
+    margin: 25px 0px;
+    text-align: center;
+}
+
+.uploadimage{
+    margin-top: 25px;
+    display: flex;
+    justify-content: center;
+}
+
+textarea{
+    width: 95%;
+    margin: auto;
+    min-height:100px ;
+    background-color: rgba(253, 253, 124, 0.808);
+    border-radius: 20px;
+    border: 2px solid black;
+    resize: none;
+    outline: none;
+    margin-bottom: 25px;
+    padding: 8px 15px;
+    font-size: 20px;
+    overflow: hidden;
+}
+
+.tableheading{
+    background-color: lightyellow;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    background-color: lightyellow; /* Added light yellow background color */
+}
+
+th, td {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+tr:hover {
+    background-color: rgba(253, 253, 124, 0.808);
+}
