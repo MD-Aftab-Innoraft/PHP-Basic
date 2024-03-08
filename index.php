@@ -1,192 +1,187 @@
-    <!-- INDEX.PHP  -->
-    <?php
-    require 'imageForm.php';
+<?php
 
-    // creating a new 'Form' object
-    $myForm = new Form();
+/* Importing the Class file */
+require 'inputForm.php';
 
-    // at this point all the properties are set to default values by constructor
+/* Creating a new Form object */
+$myForm = new Form();
 
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+/* When the form is submitted using POST method */
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-        if (empty($_POST["fname"])) {
-            $myForm->fnameErr = "First Name is required";
-        } else {
-            $fname = $_POST["fname"];
-            // check if name only contains letters and whitespace
-            if (!preg_match("/^[a-zA-Z-' ]*$/", $fname)) {
-                $myForm->fnameErr = "Only letters and white space allowed";
-            } else {
-                $myForm->setFirstName($fname);
-            }
-        }
+    /* Getting values input by the using $_POST superglobal 
+       and perform some basic string sanitizations. */
+    $fname = Form::testInput($_POST["fname"]);
+    $lname = Form::testInput($_POST["lname"]);
 
-        if (empty($_POST["lname"])) {
-            $myForm->lnameErr = "Last Name is required";
-        } else {
-            $lname = $_POST["lname"];
-            // check if name only contains letters and whitespace
-            if (!preg_match("/^[a-zA-Z-' ]*$/", $lname)) {
-                $myForm->lnameErr = "Only letters and white space allowed";
-            } else {
-                $myForm->setLastName($lname);
-            }
-        }
+    /* Regex to check for valid names */
+    $nameRegex = '/^[a-zA-Z\s\']+$/';
 
-        // setting the full name if both first and last names are valid
-        // ie, no error in both fnameErr and lnameErr
-        if ($myForm->fnameErr == "" && $myForm->lnameErr == "") {
-            $myForm->setFullname();
-        }
-        //    seeing the files in $_FILES superglobal
-        //    echo "<pre>";
-        //    print_r($_FILES);
-        //    echo "</pre>";
-
-        $img_name = $_FILES['image']['name'];
-        $img_tmp = $_FILES['image']['tmp_name'];
-        // move $img_tmp to the required folder with the name with which it is saved
-        move_uploaded_file($img_tmp, "uploads/$img_name");
-
-        $subjectmarks = $_POST["sub_marks"];
-        $subjectmarksErr = "";
-        $subjectmarkspattern = '/^[a-zA-Z0-9|\n\t\s ]+$/';
-
-        if($subjectmarks == "") {
-            $subjectmarksErr = "No subject|marks pair entered";
-        }
-        else {
-            if(preg_match($subjectmarkspattern, $subjectmarks)) {
-                $fp = fopen("marksFile.txt","w");
-                fwrite($fp,$subjectmarks);
-                fclose($fp);
-            } 
-            else {
-                $subjectmarksErr = "Input can only contain alpha-numeric characters and '|'";         
-            }
-        }
-
-        $phone = $_POST["phone"];
-        $phoneErr = "";
-        $indianphone = '/^(\+91)[1-9][0-9]{9}$/';
-
-        if($phone == ""){
-            $phoneErr = "Phone Number is required";
-        } else {
-            if(!preg_match($indianphone, $phone)) {
-                $phoneErr = "Not an Indian Phone number";
-            }
-        }
-
-        $email = $_POST["email"];
-        $emailErr = "";
-        $validemail = '';
-
-        if($email == "") {
-            $emailErr = "Email address is required";
-        } else {
-            // using regex
-            // if (!preg_match("/\b(?:(?:https?|ftp):\/\/|www\.)[-a-z0-9+&@#\/%?=~_|!:,.;]*[-a-z0-9+&@#\/%=~_|]/i",$website)) {
-
-            // using PHP filter_var function
-            if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                $emailErr = "Not a valid email";
-            }
-        }
-
+    /* Setting first name if user input is valid */
+    $myForm->fnameError = $myForm->checkInput($fname, $nameRegex);
+    if ($myForm->fnameError == "") {
+        $myForm->setFirstName($fname);
     }
-    ?>
 
-    <!DOCTYPE html>
-    <html lang="en">
+    /* Setting last name if user input is valid */
+    $myForm->lnameError = $myForm->checkInput($lname, $nameRegex);
+    if ($myForm->lnameError == "") {
+        $myForm->setLastName($lname);
+    }
 
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Upload Image</title>
-        <link rel="stylesheet" href="imageform.css">
+    /* Setting Full name if both First and Last names are valid */
+    if ($myForm->fnameError == "" && $myForm->lnameError == "") {
+        $myForm->setFullname();
+    }
 
-    </head>
+    /* Accepting image and saving it in the 'uploads' folder */
+    $img_name = $_FILES['image']['name'];
+    $img_tmp = $_FILES['image']['tmp_name'];
+    /* move $img_tmp to the required folder with the name with which it is saved */
+    move_uploaded_file($img_tmp, "uploads/$img_name");
 
-    <body>
-        <div class="container">
-            <h1 class="heading">PHP Assignment 2</h1>
-            <form method="post" enctype="multipart/form-data" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-                <label for="fname">First Name: </label>
-                <input type="text" name="fname" id="fname" placeholder="Enter your First Name">
-                <span class="error">* <?php echo $myForm->fnameErr ?></span><br>
+    /**
+     * Extracting 'Subject|Marks' input by the user using $_POST[].
+     * Declaring a regex to validate it. 
+     * Find any other errors (if present).
+     */
+    $subjectMarks = $_POST["subjectMarks"];
+    $subjectMarksRegex = '/^[a-zA-Z0-9|\s\n ]+$/';
+    $myForm->subjectMarksError = $myForm->checkSubjectMarks($subjectMarks, $subjectMarksRegex);
+    if($myForm->subjectMarksError == "") {
+        $myForm->setSubjectMarks($subjectMarks);
+    }
 
-                <label for="lname">Last Name: </label>
-                <input type="text" name="lname" id="lname" placeholder="Enter your Last Name">
-                <span class="error">* <?php echo $myForm->lnameErr ?></span><br>
+    $indianPhoneNumber = $_POST["indianPhoneNumber"];
+    $indianPhoneRegex = '/^(\+91)[1-9][0-9]{9}$/';
+    $myForm->indianPhoneError = $myForm->indianPhoneCheck($indianPhoneNumber, $indianPhoneRegex);
+    if($myForm->indianPhoneError == "") {
+        $myForm->setIndianPhoneNumber($indianPhoneNumber);
+    }
 
-                <label for="fullname">Full Name: </label>
-                <!-- change the condition for updating value of the below disabled field -->
-                <input type="text" disabled name="fullname" id="fullname" value="<?php echo (($myForm->getFullName() == "") ? "disabled input" : $myForm->getFullName()); ?>"> <br>
 
-                <label for="myimage">Upload your image:</label>
-                <input type="file" name="image" id="fileToUpload"> <br>
+    $emailAddress = $_POST["emailAddress"];
+    $myForm->emailAddressError = $myForm->checkEmailAddress($emailAddress);
+    if($myForm->emailAddressError == "") {
+        $myForm->setEmailAddress($emailAddress);
+    }
+    echo "my email address error: " . $myForm->emailAddressError . "ye error hai";
+}
 
-                <label for="sub_marks">Enter Subject and Marks(Format: Subject|Marks)</label>
-                <textarea id="sub_marks" name="sub_marks"></textarea>
-                <span class="error">* <?php if (isset($_POST["submit"])) { echo "$subjectmarksErr"; }?></span>
+?>
 
-                <label for="phone">Enter your Phone Number:</label>
-                <input type="text" id="phone" name="phone">
-                <span class="error">* <?php if(isset($_POST["submit"])) {echo $phoneErr;}?></span>
+<!DOCTYPE html>
+<html lang="en">
 
-                <label for="email">Email ID: </label>
-                <input type="text" name="email" id="email">
-                <span class="error">* <?php if(isset($_POST["submit"])) {echo $emailErr;} ?></span>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assign-5</title>
 
-                <input type="submit" name="submit" value="Submit">
-            </form>
-            <?php
+    <!-- Linking stylesheet for the page -->
+    <link rel="stylesheet" href="style.css">
+</head>
 
-            // if the image name is set, we display the image
-            if (isset($img_name) && !empty($img_name)) {
-                echo "<div class='uploadimage'>";
-                echo "<img  src = 'uploads/$img_name'  height=300px>";
-                echo "</div>";
-            }
+<body>
+    <div class="container">
+        <h1 class="heading">PHP Assignment 5</h1>
+        
+        <form onsubmit="return validateData();" method="post" enctype="multipart/form-data" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+            <!-- Input for First name and display for errors  -->
+            <label for="fname">First Name: </label>
+            <input type="text" name="fname" id="fname" minlength="2" maxlength="25" required placeholder="Enter your First Name">
+            <span class="error" id="fnameError">* <?php echo $myForm->fnameError; ?></span><br>
 
-            if ($myForm->getFullName() != "") {
-                echo "<div class='detail'>Full name : " . $myForm->getFullName() . "</div>" . "<br>";
-            }
+            <!-- Input for Last name and display for errors  -->
+            <label for="lname">Last Name: </label>
+            <input type="text" name="lname" id="lname" minlength="2" maxlength="25" required placeholder="Enter your Last Name">
+            <span class="error" id="lnameError">* <?php echo $myForm->lnameError; ?></span><br>
 
-            // if form is submitted and no subject|marks were inputted
-            if (isset($_POST["submit"]) && $subjectmarksErr == "") {
+            <!-- Full name disabled input field for displaying it and related errors -->
+            <label for="lname">Full Name: </label>
+            <input type="text" name="fullName" id="fullName" value="<?php echo $myForm->getFullName() ?>"  maxlimit="50" disabled>
+            <span class="error" id="fullNameError" >* <?php echo $myForm->fullNameError; ?></span><br>
 
-                $fp = fopen("marksFile.txt", "r");
-                echo "<table class='tableheading' >";
-                echo "<tr> <td>Subject</td> <td>Marks</td> </tr>";
-                while (!feof($fp)) {
-                    $fileline = fgets($fp);
-                    $fileline = explode("|", $fileline);
-                    echo "<tr>
-            <td>" . $fileline[0] . "</td>
-            <td> " . $fileline[1] . " </td>
-             </tr>";
-                }
-                echo "</table>";
-            }
+            <!-- Uploading an image and displaying related errors  -->
+            <label for="image">Upload your image</label>
+            <input accept="image/apng, image/jpeg, image/png" name="image" id="image" required type="file" title="Please upload an image" />
+            <span class="error" id="imageError"> <?php echo $imageUploadError; ?></span><br>
 
-            if(isset($_POST["submit"]) && $phoneErr == "") {
-                echo "<div class='detail'> Phone Number: " . $phone . "</div>";
-            }
+            <!-- Input for Subject|Marks pairs. One in each line -->
+            <label for="subjectMarks">Enter Subject|Marks : </label>
+            <textarea name="subjectMarks" id="subjectMarks" cols="30" rows="10" required maxlength="100"></textarea>
+            <span class="error" id="subjectMarksError">* <?php echo $myForm->subjectMarksError ?> </span> <br>
 
-            if(isset($_POST["submit"]) && $emailErr == "") {
-                echo "<div class='detail'> Email ID: " . $email . "</div>";
-            }
+            <!-- Input an Indian Phone number. -->
+            <label for="indianPhoneNumber" id="indianPhoneNumberLabel">Indian Phone no. :</label>
+            <input type="tel" name="indianPhoneNumber" id="indianPhoneNumber" placeholder="Enter +91 followed by 10 digit number" minlength="13" maxlength="13" required >
+            <span class="error" id="indianPhoneError">* <?php echo $myForm->indianPhoneError ?></span> <br>
 
-            // showing an error message below the image
-            // elseif(isset($_POST["submit"]) && $_POST["sub_marks"] == "") {
-            //     echo "No marks inserted";
-            // }
+            <label for="emailAddress">Email Address:</label>
+            <!-- Change input to email to enable HTML level validation.  -->
+            <input type="text" name="emailAddress" id="emailAddress" placeholder="Enter your Email address" maxlength="100" required>
+            <span class="error" id="emailAddressError">* <?php echo $myForm->emailAddressError; ?></span> <br>
 
-            ?>
+            <!-- Submits the form. -->
+            <input type="submit" name="submit" value="Submit">
+        </form>
+
+        <?php
+
+        /* If the form is submitted and there are no errors in any input field. */
+        if(isset($_POST["submit"]) && $myForm->checkNoError()) {
+
+        /* If the image name is set, we display the image. */
+        if (isset($img_name)) {?>
+
+        <div class='showimage'>
+            <img  src = "uploads/<?php echo $img_name; ?>" height="250px" >
         </div>
-    </body>
+        <?php } ?>
 
+        <!-- Displaying Hello message to the user.  -->
+        <div class="detail"><?php echo "Hello, " . $myForm->getFullName(); ?></div>
+        
+        <?php 
+        $mySubjectMarks = $myForm->getSubjectMarks(); 
+        $mySubjectMarks = trim($mySubjectMarks, " \t\n\r\0\x0B") ?>
+        <!-- Displaying the Subject|Marks pairs in the form of a table.  -->
+        <table>
+        <tr>
+        <th>Srl no.</th>
+        <th>subject</th>
+        <th>Marks</th>
 
-    </html>
+        <?php
+        $sl = 1;
+        $mySubjectMarks = explode("\n",$mySubjectMarks);
+
+        foreach($mySubjectMarks as $line){
+            $parts = explode("|", $line);
+            $subject = $parts[0];
+            $marks = $parts[1]; 
+        ?>
+
+        <tr>
+            <td><?php echo $sl++;?></td>
+            <td><?php echo $subject;?></td>
+            <td><?php echo $marks;?></td>
+        </tr>
+
+        <?php } ?>
+        </table>
+
+        <div class="detail">Phone No.: <?php echo $myForm->getIndianPhoneNumber() ?></div>
+
+        <div class="detail">Email Address: <?php echo $myForm->getEmailAddress(); ?></div>
+
+        <?php }  ?>
+
+    </div>
+
+    <!-- Adding the javascript file. -->
+    <script src="./script.js"></script>
+</body>
+
+</html>
+
