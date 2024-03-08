@@ -10,6 +10,7 @@ class Form {
     * (iii) $fullName as private to implement encapsulation 
     *        and enhance security. 
     */
+
     private $fname;
     private $lname;
     private $fullName;
@@ -47,6 +48,7 @@ class Form {
     *            (ii) string '$regex' to be validated against.
     *   @returns: string stating error message(if any).
     */
+
     function checkInput($data, $regex): string {
         if (empty($data)) {
             return "This field is required";
@@ -64,6 +66,7 @@ class Form {
     *   @params: Takes no input paramsetrs.
     *   @returns: bool(true if no errors, false otherwise).
     */
+
     function checkNoError(): bool {
         if ($this->fnameError == "" && $this->lnameError == "" && $this->imageUploadError == ""
                     && $this->subjectMarksError == "" && $this->subjectMarksError == ""
@@ -138,10 +141,11 @@ class Form {
     *   @params: string '$data' to be sanitized.
     *   @returns: Sanitized string '$data'.
     */
+
     public static function testInput(string $data): string {
         $data = trim($data);                
         $data = stripslashes($data);        
-        $data = htmlspecialchars($data);    
+  
         return $data;
     }
 
@@ -151,6 +155,7 @@ class Form {
     *            (ii) string 'regex' to be verified against.
     *   @returns: string stating error message(if any).
     */
+
     function checkSubjectMarks($data, $regex): string {
         $data = trim($data, " \t\n\r\0\x0B");
         if (empty($data)) {
@@ -182,6 +187,7 @@ class Form {
      *          (ii) string '$phoneNumberRegex' to be verified against.
      * @returns: string stating error message(if any).
      */
+
     function indianPhoneCheck($phoneNumber, $phoneNumberRegex): string {
         $phoneNumber = trim($phoneNumber, " \t\n\r\0\x0B");
         if(empty($phoneNumber)) {
@@ -201,6 +207,7 @@ class Form {
      *  @params: string '$email' to be validated.
      *  @returns: string stating error message(if any).
      */
+
     function checkEmailAddress (string $email): string {
         $email = trim($email, " \t\n\r\0\x0B");
         if(empty($email)) {
@@ -222,12 +229,11 @@ class Form {
 
             $data = json_decode($response, true);
 
-            if($data["deliverability"] != "DELIVERABLE" || $data["is_valid_format"]["text"] == false || $data["is_disposable_email"] == true) {
+            if($data["deliverability"] != "DELIVERABLE" || $data["is_valid_format"]["text"] != "TRUE" || $data["is_disposable_email"]["text"] != "FALSE") {
                 return "Email address not found.";
             }
         }
         return "";
     }
-
 }
 

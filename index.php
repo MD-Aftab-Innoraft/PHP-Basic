@@ -1,12 +1,12 @@
 <?php
 
-/* Importing the Class file */
+/* Importing the Class file. */
 require 'inputForm.php';
 
-/* Creating a new Form object */
+/* Creating a new Form object. */
 $myForm = new Form();
 
-/* When the form is submitted using POST method */
+/* When the form is submitted using POST method. */
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     /* Getting values input by the using $_POST superglobal 
@@ -14,27 +14,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $fname = Form::testInput($_POST["fname"]);
     $lname = Form::testInput($_POST["lname"]);
 
-    /* Regex to check for valid names */
+    /* Regex to check for valid names. */
     $nameRegex = '/^[a-zA-Z\s\']+$/';
 
-    /* Setting first name if user input is valid */
+    /* Setting first name if user input is valid. */
     $myForm->fnameError = $myForm->checkInput($fname, $nameRegex);
     if ($myForm->fnameError == "") {
         $myForm->setFirstName($fname);
     }
 
-    /* Setting last name if user input is valid */
+    /* Setting last name if user input is valid. */
     $myForm->lnameError = $myForm->checkInput($lname, $nameRegex);
     if ($myForm->lnameError == "") {
         $myForm->setLastName($lname);
     }
 
-    /* Setting Full name if both First and Last names are valid */
+    /* Setting Full name if both First and Last names are valid. */
     if ($myForm->fnameError == "" && $myForm->lnameError == "") {
         $myForm->setFullname();
     }
 
-    /* Accepting image and saving it in the 'uploads' folder */
+    /* Accepting image and saving it in the 'uploads' folder. */
     $img_name = $_FILES['image']['name'];
     $img_tmp = $_FILES['image']['tmp_name'];
     /* move $img_tmp to the required folder with the name with which it is saved */
@@ -65,7 +65,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if($myForm->emailAddressError == "") {
         $myForm->setEmailAddress($emailAddress);
     }
-    echo "my email address error: " . $myForm->emailAddressError . "ye error hai";
 }
 
 ?>
@@ -117,9 +116,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <input type="tel" name="indianPhoneNumber" id="indianPhoneNumber" placeholder="Enter +91 followed by 10 digit number" minlength="13" maxlength="13" required >
             <span class="error" id="indianPhoneError">* <?php echo $myForm->indianPhoneError ?></span> <br>
 
+            <!-- Input a valid email address. -->
             <label for="emailAddress">Email Address:</label>
-            <!-- Change input to email to enable HTML level validation.  -->
-            <input type="text" name="emailAddress" id="emailAddress" placeholder="Enter your Email address" maxlength="100" required>
+            <input type="email" name="emailAddress" id="emailAddress" placeholder="Enter your Email address" maxlength="100" required>
             <span class="error" id="emailAddressError">* <?php echo $myForm->emailAddressError; ?></span> <br>
 
             <!-- Submits the form. -->
@@ -153,6 +152,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <th>Marks</th>
 
         <?php
+
+        /* Creating the Subject|Marks table. */
         $sl = 1;
         $mySubjectMarks = explode("\n",$mySubjectMarks);
 
@@ -170,9 +171,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         <?php } ?>
         </table>
-
+        
+        <!-- Displays the Indian Phone number. -->
         <div class="detail">Phone No.: <?php echo $myForm->getIndianPhoneNumber() ?></div>
 
+        <!-- Displays the Email address. -->
         <div class="detail">Email Address: <?php echo $myForm->getEmailAddress(); ?></div>
 
         <?php }  ?>

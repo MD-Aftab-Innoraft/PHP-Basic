@@ -81,6 +81,18 @@ textarea{
     overflow: hidden;
 }
 
+/* Styling the email input field.*/
+input[type="email"] {
+    width: 95%;
+    margin: auto;
+    font-size: 25px;
+    padding: 5px 10px;
+    border-radius: 15px;
+    background-color: rgba(253, 253, 124, 0.808);
+    border: 2px solid black;
+    margin-bottom: 10px;
+}
+
 /* Styling the submit button. */
 input[type="submit"] {
     display: block;
