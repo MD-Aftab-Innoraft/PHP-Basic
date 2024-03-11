@@ -95,7 +95,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && $myForm->checkNoError()) {
 
     /* Displaying image on the pdf if present. */
     if (!empty($img_name)) {
-        $myPdf->Image("uploads/$img_name", 149, 25, 50, 48.8);
+        $myPdf->Image("uploads/$img_name", 149, 37.8, 50, 51);
     }
 
     /** 
@@ -105,6 +105,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && $myForm->checkNoError()) {
     /* Heading of pdf file. */
     $myPdf->SetFont("Arial", "U", 16);
     $myPdf->Cell(0, 14, "Report Card", 1, 1, 'C');
+
+    /* Added a line break after Heading. */
+    $myPdf->Ln();
 
     /* Full name of Applicant. */
     $myPdf->SetFont("Arial", "", 14);
@@ -126,7 +129,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && $myForm->checkNoError()) {
     $myPdf->SetFont("Arial", "U", 16);
 
     /* Subject|Marks table heading. */
-    $myPdf->Cell(0, 14, "Marks obtained", 1, 1, 'C');
+    $myPdf->Cell(0, 14, "Marks obtained", 0, 1, 'C');
 
     /* Subject|Marks table headers. */
     $myPdf->SetFont("Arial", "U", 14);
