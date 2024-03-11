@@ -1,0 +1,11 @@
+{
+    "name": "aftab/php-basic",
+    "autoload": {
+        "psr-4": {
+            "Aftab\\PhpBasic\\": "src/"
+        }
+    },
+    "require": {
+        "phpmailer/phpmailer": "^6.9"
+    }
+}
