@@ -17,14 +17,14 @@ try {
 		
     /* Configuring the server settings. */
 	$mail->isSMTP();										 
-	$mail->Host	 = 'smtp.gmail.com;';				 
+	$mail->Host	 = 'smtp.gmail.com';				 
 	$mail->SMTPAuth = true;							 
 	$mail->Username = 'aftabansari1024@gmail.com';				 
 	$mail->Password = 'kbgn mieq mmcy cxcf';					 
 	$mail->SMTPSecure = 'tls';							 
 	$mail->Port	 = 587; 
 
-	$mail->setFrom('aftabansari1024@gmail.com', 'Aftab' );		 
+	$mail->setFrom('aftabansari1024@gmail.com', 'Aftab Ansari' );		 
 	$mail->addAddress($myEmail);
 	
 	$mail->isHTML(true);	
@@ -36,14 +36,42 @@ try {
 	$mail->Body = 'Thank you for your submission';
 
 	$mail->send();
-	echo "Mail has been sent successfully!";
+	$mailMsg = "Mail has been sent successfully!";
 
 } 
 catch (Exception $e) {
-	echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+	$mailMsg = "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
 }
 
 }
 
 ?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Message</title>
+	<style>
+		body {
+			background-image: linear-gradient(to top, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
+			min-height: 100svh;
+		}
+
+		#msg{
+			font-size: 25px;
+			height: 100svh;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+	</style>
+</head>
+<body>
+	<div id="msg">
+		<?php  echo $mailMsg; ?>
+	</div>
+</body>
+</html>
 
