@@ -1,0 +1,42 @@
+body{
+    background-image: linear-gradient(to top, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
+    min-height: 100svh;
+}
+
+.container{
+    width: 575px;
+    margin: auto;
+}
+
+label{
+    display: block;
+    font-size: 25px;
+    margin-bottom: 15px;
+}
+
+input[type="email"] {
+    width: 90%;
+    margin: auto;
+    font-size: 20px;
+    padding: 5px 10px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    border: 1px solid black;
+    outline: none;
+}
+
+.error{
+    color: red;
+    vertical-align: top;
+}
+
+button{
+    font-size: 20px;
+    padding: 5px 15px;
+    margin-top: 25px;
+}
+
+button:hover{
+    cursor: pointer;
+}
+
