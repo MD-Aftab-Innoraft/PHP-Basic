@@ -1,8 +1,9 @@
 <?php
 
-/* Form class to store the Form's information. */
-class Form
-{
+/**
+ * Form class to store the form inputs entered by the user.
+ */
+class Form {
 
   /**
    * @var string
@@ -24,7 +25,7 @@ class Form
 
   /**
    * @var boolean
-   *  TRUE(if every input is properly filled),
+   *  TRUE (if every input is properly filled),
    *  FALSE otherwise.
    */
   private $status;
@@ -53,8 +54,7 @@ class Form
   public string $imageUploadError, $indianPhoneError, $emailAddressError;
 
   /* Non-parameterized constructor to initialize data members. */
-  function __construct()
-  {
+  function __construct() {
     $this->fname = $this->lname = $this->fullName = "";
     $this->subjectMarks = $this->indianPhoneNumber = "";
     $this->fnameError = $this->lnameError = "";
@@ -67,24 +67,26 @@ class Form
    *  Method to check input for specified conditions and 
    *  update error messages for name inputs.
    * 
-   *  @param string 
-   *   data to be verified.
+   *  @param string $data
+   *   Data to be verified.
    * 
-   *  @param string
-   *   regex to be validated against.
+   *  @param string $regex
+   *   Regex to be validated against.
    * 
    *  @return  string 
-   *   stating error message(if any).
+   *   Stating error message(if any).
    */
-  function checkInput($data, $regex): string
-  {
+  function checkInput($data, $regex): string {
     if (empty($data)) {
       return "This field is required";
-    } else if (strlen($data) < 2 || strlen($data) > 25) {
+    } 
+    elseif (strlen($data) < 2 || strlen($data) > 25) {
       return "Input length should be between 2 and 25";
-    } else if (!preg_match($regex, $data)) {
+    } 
+    elseif (!preg_match($regex, $data)) {
       return "Invalid input";
-    } else {
+    } 
+    else {
       return "";
     }
   }
@@ -92,19 +94,15 @@ class Form
   /** 
    *  Method to check if there are no error messages.
    * 
-   *  @param  none
-   *   no input parameters.
-   * 
-   *  @return boolean
+   *  @return bool
    *   TRUE if no errors, FALSE otherwise.
    */
-  function checkNoError(): bool
-  {
+  function checkNoError(): bool {
     if (
       $this->fnameError == "" && $this->lnameError == "" && $this->imageUploadError == ""
       && $this->subjectMarksError == "" && $this->subjectMarksError == ""
-      && $this->emailAddressError == ""
-    ) {
+      && $this->emailAddressError == "") {
+
       $this->status = TRUE;
     }
     return $this->status;
@@ -113,68 +111,57 @@ class Form
   /**
    * Setter to set the First name ($fname). 
    * 
-   * @param string
-   *  input first name.
-   * 
-   * @return none
+   * @param string $fname
+   *  Input first name.
    */
-  function setFirstName(string $fname)
-  {
+  function setFirstName(string $fname) {
     $this->fname = $fname;
   }
 
   /**
    *  Setter to set the Last name ($lname). 
-   *  @param string
-   *   input last name.
    * 
-   *  @return none*/
-  function setLastName(string $lname)
-  {
+   *  @param string $lname
+   *   Input last name.
+   */
+  function setLastName(string $lname) {
     $this->lname = $lname;
   }
 
   /**
    *  Getter to get the First name ($fname).
-   *  
-   *  @param none
    * 
    *  @return string
-   *   returns the first name.
+   *   Returns the first name.
    */
-  function getFirstName(): string
-  {
+  function getFirstName(): string {
     return $this->fname;
   }
 
   /**
    *  Getter to get the Last name ($lname). 
-   *  @param none
    * 
    *  @return string 
-   *   returns the last name.
+   *   Returns the last name.
    */
-  function getLastName(): string
-  {
+  function getLastName(): string {
     return $this->lname;
   }
 
-  /* Sets the $fullName ($fname + $lname). */
-  function setFullname()
-  {
+  /**
+   *  Sets the $fullName ($fname + $lname). 
+   */
+  function setFullname() {
     $this->fullName = $this->fname . " " . $this->lname;
   }
 
   /**
-   *  Gets the fullname ($fullName).
-   * 
-   * @param none
+   *  Getter to get the fullname ($fullName).
    * 
    * @return string
-   *  returns the full name.
+   *  Returns the full name.
    */
-  function getFullName(): string
-  {
+  function getFullName(): string {
     return $this->fullName;
   }
 
@@ -182,81 +169,70 @@ class Form
    * @param string 
    *  Stores the 'Subject|Marks' pairs.
    */
-  function  setSubjectMarks($data)
-  {
+  function  setSubjectMarks($data) {
     $this->subjectMarks = $data;
   }
 
   /**
    *  Getter returns the 'Subject|Marks' pairs as a string.
    * 
-   * @param none
-   * 
    * @return string
-   *  returns the 'Subject|Marks' pairs.
+   *  Returns the 'Subject|Marks' pairs.
    */
-  function getSubjectMarks(): string
-  {
+  function getSubjectMarks(): string {
     return $this->subjectMarks;
   }
 
   /**
    * Setter to set the phone number.
    * 
-   * @param string
-   *  stores the Indian Phone number.
+   * @param string $phone
+   *  Stores the Indian Phone number.
    */
-  function setIndianPhoneNumber($phone)
-  {
+  function setIndianPhoneNumber($phone) {
     $this->indianPhoneNumber = $phone;
   }
 
   /** 
    * Getter to get the Indian Phone Number. 
-   * @param none
    * 
    * @return string
-   *  returns Indian Phone number.
+   *  Returns Indian Phone number.
    */
-  function getIndianPhoneNumber(): string
-  {
+  function getIndianPhoneNumber(): string {
     return $this->indianPhoneNumber;
   }
 
   /**
    * Setter to set the email address.
-   * @param string
-   *  input email address
    * 
-   * @return none
+   * @param string $email
+   *  Input email address.
    */
-  function setEmailAddress(string $data)
-  {
-    $this->emailAddress = $data;
+  function setEmailAddress(string $email) {
+    $this->emailAddress = $email;
   }
 
   /**
    * Gets the email address.
-   * @param none
    * 
    * @return string
-   *  email adress.
+   *  Returns email adress.
    */
-  function getEmailAddress(): string
-  {
+  function getEmailAddress(): string {
     return $this->emailAddress;
   }
 
   /** 
    *  Performs some basic sanitizations on the user input. 
-   *  @param string 
-   *   data to be sanitized.
+   * 
+   *  @param string $data
+   *   Data to be sanitized.
    * 
    *  @return string 
-   *   Sanitized string '$data'.
+   *   Sanitized string $data.
    */
-  public static function testInput(string $data): string
-  {
+  public static function testInput(string $data): string {
     $data = trim($data);
     $data = stripslashes($data);
 
@@ -266,16 +242,16 @@ class Form
   /**
    * Validates 'Subject|Marks' pairs.
    * 
-   * @param string data
-   *  data to be verified.
-   * @param string
-   *  regex to be validated against.
+   * @param string $data
+   *  Data to be verified.
+   * 
+   * @param string $regex
+   *  Regex to be validated against.
    * 
    * @return string
-   *  contains relevant error message
+   *  Relevant error message.
    */
-  function checkSubjectMarks($data, $regex): string
-  {
+  function checkSubjectMarks($data, $regex): string {
     $data = trim($data, " \t\n\r\0\x0B");
     if (empty($data)) {
       return "No subject|marks pairs entered";
@@ -284,6 +260,7 @@ class Form
       return "Only alphabets, digits and | allowed";
     } 
     else {
+      /* Validating each Subject|Marks pair. */
       $lines = explode("\n", $data);
       $numberOfLines = count($lines);
 
@@ -303,20 +280,22 @@ class Form
 
   /**
    * Validates for an Indian Phone number.
-   * @param  string 
-   *  phoneNumber to be validated.
-   * @param string 
-   *  regex to be validated against.
+   * 
+   * @param string $phoneNumber
+   *  Phone number to be validated.
+   * 
+   * @param string $phoneNumberRegex
+   *  Regex to be validated against.
    * 
    * @return string 
-   *  stating error message(if any).
+   *  Stating error message(if any).
    */
   function indianPhoneCheck($phoneNumber, $phoneNumberRegex): string {
     $phoneNumber = trim($phoneNumber, " \t\n\r\0\x0B");
     if (empty($phoneNumber)) {
       return "Phone number is required";
     } 
-    else if (!preg_match($phoneNumberRegex, $phoneNumber)) {
+    elseif (!preg_match($phoneNumberRegex, $phoneNumber)) {
       return "Only digits and + symbol allowed";
     } 
     else {
@@ -327,11 +306,11 @@ class Form
   /**
    *  Validates the Email Address.
    *  
-   *  @param string 
-   *   email to be validated.
+   *  @param string $email
+   *   Email to be validated.
    * 
    *  @return string 
-   *   stating error message(if any).
+   *   Stating error message(if any).
    */
   function checkEmailAddress(string $email): string
   {
@@ -339,7 +318,7 @@ class Form
     if (empty($email)) {
       return "Email address is required";
     } 
-    else if (filter_var($email, FILTER_VALIDATE_EMAIL) == FALSE) {
+    elseif (filter_var($email, FILTER_VALIDATE_EMAIL) == FALSE) {
       return "Email address is invalid";
     } 
     else {

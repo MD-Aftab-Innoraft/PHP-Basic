@@ -14,7 +14,7 @@
   <div class="container">
     <h1 class="heading">PHP Assignment 6</h1>
 
-    <!-- Form is submitted f no errors are found by javascript. -->
+    <!-- Form is submitted if no errors are found by javascript. -->
     <form onsubmit="return validateData();" method="post" enctype="multipart/form-data" action="pdfGenerate.php">
 
       <!-- Input First name and display related errors (if any).  -->
@@ -22,17 +22,17 @@
       <input type="text" name="fname" id="fname" minlength="2" maxlength="25" required placeholder="Enter your First Name">
       <span class="error" id="fnameError">* <?php echo $myForm->fnameError; ?></span> <br>
 
-      <!-- Input Last name and display related errors if any). -->
+      <!-- Input Last name and display related errors (if any). -->
       <label for="lname">Last Name: </label>
       <input type="text" name="lname" id="lname" minlength="2" maxlength="25" required placeholder="Enter your Last Name">
       <span class="error" id="lnameError">* <?php echo $myForm->lnameError; ?></span> <br>
 
-      <!-- Full name disabled field for displaying it and related errors -->
+      <!-- Full name disabled field for displaying it and related errors. -->
       <label for="lname">Full Name: </label>
       <input type="text" name="fullName" id="fullName" value="" maxlimit="50" disabled>
       <span class="error" id="fullNameError">* <?php echo $myForm->fullNameError; ?></span> <br>
 
-      <!-- Uploading an image and displaying related errors if any). -->
+      <!-- Uploading an image and display related errors if any). -->
       <label for="image">Upload your image</label>
       <input accept="image/apng, image/jpeg, image/png" name="image" id="image" required type="file" title="Please upload an image" />
       <span class="error" id="imageError"> <?php echo $imageUploadError; ?></span><br>
@@ -42,7 +42,7 @@
       <textarea name="subjectMarks" id="subjectMarks" cols="30" rows="10" required maxlength="100"></textarea>
       <span class="error" id="subjectMarksError">* <?php echo $myForm->subjectMarksError ?> </span> <br>
 
-      <!-- Input an Indian Phone number and related errors. -->
+      <!-- Input an Indian Phone number and display related errors. -->
       <label for="indianPhoneNumber" id="indianPhoneNumberLabel">Indian Phone no. :</label>
       <input type="tel" name="indianPhoneNumber" id="indianPhoneNumber" placeholder="Enter +91 followed by 10 digit number" minlength="13" maxlength="13" required>
       <span class="error" id="indianPhoneError">* <?php echo $myForm->indianPhoneError ?></span> <br>

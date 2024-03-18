@@ -2,141 +2,159 @@
 let errorFree = true;
 
 /**
- * Function to check for valid names and return
- * relevant Error message.
- * @params : (i)   string 'data' to be verified.
- *          (ii)  string 'regex' to validate 'data'.
- *          (iii) string 'field' conatins the field being verified.        
+ * Check for valid names and return relevant error message.
  * 
- * @returns : string stating a relevant error (if any).
+ * @param string data
+ *  Data to be validated.
+ * 
+ * @param string regex
+ *  Regex to be validated against.
+ * 
+ * @return string 
+ *  Stating a relevant error (if any).
  */
-
 function checkInput(data, regex, field) {
-    let length = data.length;
-    if (length === 0) {
-        errorFree = false;
-        return `${field} is required.`;
-    }
-    else if (length < 2 || length > 25 ) {
-        errorFree = false;
-        return `${field} should be between 2 to 25 characters.`;
-    }
-    else if (!regex.test(data)) {
-        errorFree = false;
-        return "* Only alphabets, white-spaces and ' allowed.";
-    }
-    else {
-        return "*";
-    }
+  let length = data.length;
+  if (length === 0) {
+    errorFree = false;
+    return `${field} is required.`;
+  }
+  else if (length < 2 || length > 25 ) {
+    errorFree = false;
+    return `${field} should be between 2 to 25 characters.`;
+  }
+  else if (!regex.test(data)) {
+    errorFree = false;
+    return "* Only alphabets, white-spaces and ' allowed.";
+  }
+  else {
+    return "*";
+  }
 }
 
 /**
-* Function to check if the input 'data' is a number.
-* @params : (i) 'data' to be verified.   
-*
-* @returns : boolean (true if 'data' is a number. otherwise false).
-*/
-
+ * Function to check if the input 'data' is a number.
+ * @param string 
+ *  data to be verified.   
+ *
+ * @return bool
+ *  TRUE if 'data' is a number, FALSE otherwise.
+ */
 function isNumber(data) { 
-    return /^-?[\d.]+(?:e-?\d+)?$/.test(data); 
+  return /^-?[\d.]+(?:e-?\d+)?$/.test(data); 
 } 
 
 /**
-* Function to check if the input 'data' has valid 'Subject|Marks' pairs.
-* @params : (i)   string 'data' to be verified.   
-*           (ii)  string 'regex' to allow only specified characters.
-*
-* @returns : string containing relevant error message(if any).
-*/
-
+ * Function to check if the input 'data' has valid 'Subject|Marks' pairs.
+ * @param string data 
+ *  Data to be verified.   
+ * 
+ * @param string regex
+ *  Regex to be validated against.
+ *
+ * @return string
+ *  Stating relevant error message(if any).
+ */
 function checkSubjectMarks (data, regex){
-    if(data.length == 0) {
+  if(data.length == 0) {
+    errorFree = false;
+    return "* No subject|marks pairs entered";
+  }
+  else if (!regex.test(data)) {
+    errorFree = false;
+    return "* Only alphabets, digits and | allowed";
+  }
+  else{
+    let lines = data.split("\n");
+    let numberOfLines = lines.length;
+
+    /* Validating each Subject|Marks pair. */
+    for(i = 0; i < numberOfLines; i++){
+      subjectMarksPair = lines[i].split("|");
+      if(subjectMarksPair.length !== 2 || isNumber(subjectMarksPair[0]) || !isNumber(subjectMarksPair[1])) {
         errorFree = false;
-        return "* No subject|marks pairs entered";
-    }
-    else if (!regex.test(data)) {
+        return "* Invalid Pairs";
+      }
+      else if(subjectMarksPair[1] > 100 ) {
         errorFree = false;
-        return "* Only alphabets, digits and | allowed";
-    }
-    else{
-        let lines = data.split("\n");
-        let numberOfLines = lines.length;
-        for(i = 0; i < numberOfLines; i++){
-            subjectMarksPair = lines[i].split("|");
-            if(subjectMarksPair.length !== 2 || isNumber(subjectMarksPair[0]) || !isNumber(subjectMarksPair[1])) {
-                errorFree = false;
-                return "* Invalid Pairs";
-            }
-            else if(subjectMarksPair[1] > 100 ) {
-                errorFree = false;
-                return "* Marks cannot be greater than 100";
-            }
-        }
-       
-    }
-    return "*";
+        return "* Marks cannot be greater than 100";
+      }
+    }      
+  }
+  return "*";
 }
 
 /**
-*   Function to check if the input Phone number is
-*   a valid Indian phone number.
-*   @params : (i)  string 'indianPhone' to be verified.
-*             (ii) string 'indianPhoneRegex' to be validated against.
-*   @returns : string containing relevant error message(if any).
-*   */ 
-
+ * Function to check if the input Phone number is
+ * a valid Indian phone number.
+ * 
+ * @param string indianPhone
+ *  Phone number to be verified.
+ * 
+ * @param string indianPhoneRegex
+ *  Regex to be validated against.
+ * 
+ * @return string
+ *  Relevant error message(if any).
+ */ 
 function indianPhoneCheck (indianPhone, indianPhoneRegex) {
     
     if(indianPhone.length != 13) {
-        errorFree = false;
-        return "* Please input +91 followed by your 10 digit number";
+      errorFree = false;
+      return "* Please input +91 followed by your 10 digit number";
     }
     else if (!indianPhone.startsWith("+91")) {
-        errorFree = false;
-        return "* Please start with +91";
+      errorFree = false;
+      return "* Please start with +91";
     }
     else if (!indianPhoneRegex.test(indianPhone)){
-        errorFree = false;
-        return "* Only digits and + symbol allowed";
+      errorFree = false;
+      return "* Only digits and + symbol allowed";
     }
     else {
-        return "*"; 
+      return "*"; 
     }
 }
 
 /**
- * Function to validate Email Address.
- * @params : (i)  string 'emailAddress' to be verified.
- *           (ii) string 'emailAddressRegex' to be validated against.
- * @returns: string stating a relevant error (if any).
+ * Validates Email Address.
+ * 
+ * @param string emailAddress
+ *  Email to be verified.
+ * 
+ * @param string emailAddressRegex
+ *  Regex to be validated against.
+ * 
+ * @return string 
+ *  Stating relevant error (if any).
  */
-
 function checkEmailAddress(emailAddress, emailAddressRegex) {
-    if(emailAddress.length == 0) {
-        errorFree = false;
-        return "* Email address is required.";
+    if (emailAddress.length == 0) {
+      errorFree = false;
+      return "* Email address is required.";
     }
     else if (!emailAddressRegex.test(emailAddress)) {
-        errorFree = false;
-        return "* Invalid Email address.";
+      errorFree = false;
+      return "* Invalid Email address.";
     }
     else {
-        return "*";
+      return "*";
     }
 }
 
 /**
- * Function to implement front-end validation
- * of the user inputs.
- * @params : No input parameters 
- * @returns : boolean (true if no errors).
+ * Implement front-end validation of user inputs.
+ * 
+ * @return bool
+ *  TRUE if no errors, FALSE otherwise.
  */
-
 function validateData() {
     /* Getting the value of the different user inputs */
     let fname = document.getElementById('fname').value.trim();
     let lname = document.getElementById('lname').value.trim();
     let fullName = document.getElementById('fullName').value.trim();
+
+    /* Initially assuming there are no errors. */
     errorFree = true;
 
     /* Regex to check for valid names */
