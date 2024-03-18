@@ -16,7 +16,8 @@ body {
 }
 
 .error {
-    color: white;
+    color: black;
+    vertical-align: top;
     font-size: 18px;
     font-family: monospace;
     margin-bottom: 10px;
@@ -51,7 +52,7 @@ input:focus {
 
 
 input[type="text"] {
-    width: 85%;
+    width: 95%;
     margin: auto;
     background-color: lightgrey;
     border: none;
