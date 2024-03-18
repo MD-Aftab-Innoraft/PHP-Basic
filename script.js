@@ -4,56 +4,61 @@ let errorFree = true;
 /**
  * Function to check for valid names and return
  * relevant Error message.
- * @params : (i)   string 'data' to be verified.
- *           (ii)  string 'regex' to validate 'data'.
- *           (iii) string 'field' conatins the field being verified.        
- * 
- * @returns : string
+ *
+ * @params string data
+ *  Data to be verified.
+ * @param string regex
+ *  Regex to be validated against.
+ * @param string field
+ *  Field name which is being verified.
+ *
+ *  @return string
+ *  Stating relevant error message.
  */
 function checkInput(data, regex, field) {
     let length = data.length;
-    if (length === 0) {
-        errorFree = false;
-        return `${field} is required.`;
-    }
-    else if (length < 2 || length > 25 ) {
-        errorFree = false;
-        return `${field} should be between 2 to 25 characters.`;
-    }
-    else if (!regex.test(data)) {
-        errorFree = false;
-        return "* Only alphabets, white-spaces and ' allowed.";
-    }
-    else {
-        return "*";
-    }
+  if (length === 0) {
+    errorFree = false;
+    return `${field} is required.`;
+  }
+  else if (length < 2 || length > 25 ) {
+    errorFree = false;
+    return `${field} should be between 2 to 25 characters.`;
+  }
+  else if (!regex.test(data)) {
+    errorFree = false;
+    return "* Only alphabets and white-spaces allowed.";
+  }
+  return "*";
 }
 
 /**
  * Function to implement front-end validation
  * of the user inputs.
- * @params : No input parameters 
- * @returns : boolean (true if no errors)
+ *
+ * @return bool
+ *  true if every field is properly filled, false otherwise.
  */
 function validateData() {
-    /* Getting the value of the different user inputs */
-    let fname = document.getElementById('fname').value.trim();
-    let lname = document.getElementById('lname').value.trim();
-    let fullName = document.getElementById('fullName').value.trim();
-    errorFree = true;
+  // Getting the value of first and last name.
+  let fname = document.getElementById('fname').value.trim();
+  let lname = document.getElementById('lname').value.trim();
 
-    /* Regex to check for valid names */
-    let nameRegex = /^[a-zA-Z\s']+$/;
+  // Initially, asssume the fields to be properly field.
+  errorFree = true;
 
-    /* Validation for First name */
-    let fnameError = document.getElementById('fnameError');
-    fnameError.innerHTML = checkInput(fname, nameRegex, "First name");
+  // Regex to check for valid names.
+  let nameRegex = /^[a-zA-Z\s]+$/;
 
-    /* Validation for Last name */
-    let lnameError = document.getElementById('lnameError');
-    lnameError.innerHTML = checkInput(lname, nameRegex, "Last name");
+  // Validation for first name.
+  let fnameError = document.getElementById('fnameError');
+  fnameError.innerHTML = checkInput(fname, nameRegex, "First name");
 
-    /* Returning whether all the input fields are proper
-       and the form can be submitted or not. */
-    return errorFree;
+  // Validation for last name.
+  let lnameError = document.getElementById('lnameError');
+  lnameError.innerHTML = checkInput(lname, nameRegex, "Last name");
+
+  /* Returning whether all the input fields are proper
+     and the form can be submitted or not. */
+  return errorFree;
 }

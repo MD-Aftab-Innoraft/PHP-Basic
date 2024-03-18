@@ -1,4 +1,4 @@
-/* Resetting padding and margin to 0 and 
+/* Resetting padding and margin to 0 and
    setting the box-sizing property. */
 *{
     margin: 0;
@@ -9,7 +9,7 @@
 /* Setting height and background of body. */
 body{
     background: rgb(34,193,195);
-    background: radial-gradient(circle, rgba(34,193,195,1) 0%, rgba(253,187,45,1) 100%); 
+    background: radial-gradient(circle, rgba(34,193,195,1) 0%, rgba(253,187,45,1) 100%);
     min-height: 100svh;
 }
 
