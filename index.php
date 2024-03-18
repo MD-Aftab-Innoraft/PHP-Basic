@@ -101,10 +101,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
  *  Sanitized string data.
  */
 function test_input($data) {
-    $data = trim($data);
-    $data = stripslashes($data);
-    $data = htmlspecialchars($data);
-    return $data;
+  $data = trim($data);
+  $data = stripslashes($data);
+  $data = htmlspecialchars($data);
+  return $data;
 }
 
 ?>
@@ -126,7 +126,7 @@ function test_input($data) {
 
       <!-- Form to take user inputs. -->
       <form method="post" onsubmit="return validateData();"
-        action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" >
+      action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" >
 
         <!-- Input for first name and display related errors. -->
         <label for="fname">First name:</label><br>

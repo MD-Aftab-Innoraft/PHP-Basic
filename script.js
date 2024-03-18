@@ -1,14 +1,29 @@
+/* Initially assuming there are no errors. */
 let errorFree = true;
 
+/**
+ *
+ * @param string data
+ *  Data to be validated.
+ *
+ * @param string regex
+ *  Regex to be validated against.
+ *
+ * @param string field
+ *  Field for which validation is performed.
+ *
+ * @return string
+ *  Relevant error message.
+ */
 function checkInput(data, regex, field) {
   let length = data.length;
   if (length === 0) {
     errorFree = false;
     return `${field} is required.`;
   }
-  else if (length < 2 || length > 50) {
+  else if (length < 2 || length > 25) {
     errorFree = false;
-    return `${field} should be between 2 to 50 characters.`;
+    return `${field} should be between 2 to 25 characters.`;
   }
   else if (!regex.test(data)) {
     errorFree = false;
@@ -21,6 +36,7 @@ function checkInput(data, regex, field) {
 
 function validateData() {
   errorFree = true;
+
   /* Getting the first name and it's error using their id. */
   let fname = document.getElementById('fname').value.trim();
   let fnameError = document.getElementById('fnameError');
@@ -41,3 +57,4 @@ function validateData() {
   /* Returning if there are any errors or not. */
   return errorFree;
 }
+
