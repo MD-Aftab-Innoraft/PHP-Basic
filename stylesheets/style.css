@@ -1,0 +1,44 @@
+body {
+  min-height: 100svh;
+  background-image: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%);
+  padding: 50px 0px;
+}
+
+.container {
+  width: 800px;
+  margin: auto;
+}
+
+.error {
+  color: red;
+  vertical-align: top;
+}
+
+label {
+  display: block;
+  font-size: 25px;
+  margin-top: 30px;
+}
+
+input[type="text"],
+input[type="password"] {
+  width: 95%;
+  margin: auto;
+  font-size: 20px;
+  padding: 5px 10px;
+  margin-bottom: 5px;
+  border-radius: 5px;
+  border: 1px solid black;
+  outline: none;
+}
+
+input[type="submit"] {
+  display: block;
+  font-size: 20px;
+  padding: 5px 15px;
+  margin-top: 30px;
+}
+
+input[type="submit"]:hover {
+  cursor: pointer;
+}
